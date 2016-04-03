@@ -3,7 +3,7 @@
 The BetterFonts mod adds TrueType/OpenType font support for Minecraft. This mod will use the fonts installed on your system for drawing text instead of the builtin bitmap fonts that come with Minecraft. Languages such as Arabic and Hindi look much better with this mod since both require complex layout that the bitmap fonts simply can't provide. All in-game text will change to use the new fonts including GUIs, the F3 debug screen, chat, and even signs. This mod should have little or no impact on performance.
 
 ### Downloads: ###
-<<http://minecraft.curseforge.com/projects/better-fonts>>
+<<http://minecraft.curseforge.com/projects/truetype-font-replacement>>
 
 ### Screenshots: ###
 Click on any of the screenshots below to see a full-sized version of the image.
