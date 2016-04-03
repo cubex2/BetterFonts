@@ -20,8 +20,8 @@ plugins {
 }
 */
 version = "1.2.0-1.8.9"
-group = "cubex2.betterfonts" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "BetterFonts"
+group = "cubex2.ttfr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "TTFR"
 
 minecraft {
     version = "1.8.9-11.15.1.1808"

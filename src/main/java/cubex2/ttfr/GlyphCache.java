@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

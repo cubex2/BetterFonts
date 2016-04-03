@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 public interface IBFFontRenderer
 {

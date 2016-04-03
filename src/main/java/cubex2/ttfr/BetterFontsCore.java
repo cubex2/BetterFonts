@@ -1,6 +1,5 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;

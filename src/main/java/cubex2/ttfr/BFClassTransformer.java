@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
@@ -31,7 +31,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
         String resourceLocation = classNode.name.equals("avn") ? "jy" : "net/minecraft/util/ResourceLocation";
         String posX = classNode.name.equals("avn") ? "i" : "field_78295_j";
 
-        classNode.interfaces.add("cubex2/betterfonts/IBFFontRenderer");
+        classNode.interfaces.add("cubex2/ttfr/IBFFontRenderer");
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "stringCache", "Lcubex2/betterfonts/StringCache;", null, null));
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "dropShadowEnabled", "Z", null, true));
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "enabled", "Z", null, true));
@@ -55,7 +55,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
                     InsnList toInject = new InsnList();
 
                     toInject.add(new VarInsnNode(ALOAD, 2));
-                    toInject.add(new MethodInsnNode(INVOKESTATIC, "cubex2/betterfonts/FontRendererCallback", "constructor",
+                    toInject.add(new MethodInsnNode(INVOKESTATIC, "cubex2/ttfr/FontRendererCallback", "constructor",
                                                     "(Lcubex2/betterfonts/IBFFontRenderer;L" + resourceLocation + ";)V", false));
                     toInject.add(new VarInsnNode(ALOAD, 0));
                     m.instructions.insertBefore(methodNode, toInject);
@@ -94,7 +94,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             InsnList toInject = new InsnList();
             toInject.add(new VarInsnNode(ALOAD, 0));
             toInject.add(new VarInsnNode(ALOAD, 1));
-            toInject.add(new MethodInsnNode(INVOKESTATIC, "cubex2/betterfonts/FontRendererCallback", "bidiReorder",
+            toInject.add(new MethodInsnNode(INVOKESTATIC, "cubex2/ttfr/FontRendererCallback", "bidiReorder",
                                             "(Lcubex2/betterfonts/IBFFontRenderer;Ljava/lang/String;)Ljava/lang/String;", false));
             toInject.add(new InsnNode(ARETURN));
             m.instructions.insertBefore(m.instructions.getFirst(), toInject);
@@ -120,7 +120,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
 
 
                     InsnList toInject = new InsnList();
-                    toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/betterfonts/FontRendererCallback", "betterFontsEnabled", "Z"));
+                    toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/ttfr/FontRendererCallback", "betterFontsEnabled", "Z"));
                     toInject.add(new JumpInsnNode(IFEQ, labelNode));
                     toInject.add(new VarInsnNode(ALOAD, 0));
                     toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
@@ -134,7 +134,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
                     toInject.add(new VarInsnNode(FLOAD, 3));
                     toInject.add(new VarInsnNode(ILOAD, 4));
                     toInject.add(new VarInsnNode(ILOAD, 5));
-                    toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/betterfonts/StringCache", "renderString", "(Ljava/lang/String;FFIZ)I", false));
+                    toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/ttfr/StringCache", "renderString", "(Ljava/lang/String;FFIZ)I", false));
                     toInject.add(new InsnNode(I2F));
                     toInject.add(new VarInsnNode(ALOAD, 0));
                     toInject.add(new FieldInsnNode(GETFIELD, classNode.name, posX, "F"));
@@ -154,7 +154,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             LabelNode labelNode = new LabelNode(new Label());
 
             InsnList toInject = new InsnList();
-            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/betterfonts/FontRendererCallback", "betterFontsEnabled", "Z"));
+            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/ttfr/FontRendererCallback", "betterFontsEnabled", "Z"));
             toInject.add(new JumpInsnNode(IFEQ, labelNode));
             toInject.add(new VarInsnNode(ALOAD, 0));
             toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
@@ -163,7 +163,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             toInject.add(new VarInsnNode(ALOAD, 0));
             toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
             toInject.add(new VarInsnNode(ALOAD, 1));
-            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/betterfonts/StringCache", "getStringWidth", "(Ljava/lang/String;)I", false));
+            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/ttfr/StringCache", "getStringWidth", "(Ljava/lang/String;)I", false));
             toInject.add(new InsnNode(IRETURN));
             toInject.add(labelNode);
             m.instructions.insertBefore(m.instructions.getFirst(), toInject);
@@ -174,7 +174,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             LabelNode labelNode = new LabelNode(new Label());
 
             InsnList toInject = new InsnList();
-            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/betterfonts/FontRendererCallback", "betterFontsEnabled", "Z"));
+            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/ttfr/FontRendererCallback", "betterFontsEnabled", "Z"));
             toInject.add(new JumpInsnNode(IFEQ, labelNode));
             toInject.add(new VarInsnNode(ALOAD, 0));
             toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
@@ -185,7 +185,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             toInject.add(new VarInsnNode(ALOAD, 1));
             toInject.add(new VarInsnNode(ILOAD, 2));
             toInject.add(new VarInsnNode(ILOAD, 3));
-            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/betterfonts/StringCache", "trimStringToWidth", "(Ljava/lang/String;IZ)Ljava/lang/String;", false));
+            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/ttfr/StringCache", "trimStringToWidth", "(Ljava/lang/String;IZ)Ljava/lang/String;", false));
             toInject.add(new InsnNode(ARETURN));
             toInject.add(labelNode);
             m.instructions.insertBefore(m.instructions.getFirst(), toInject);
@@ -196,7 +196,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             LabelNode labelNode = new LabelNode(new Label());
 
             InsnList toInject = new InsnList();
-            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/betterfonts/FontRendererCallback", "betterFontsEnabled", "Z"));
+            toInject.add(new FieldInsnNode(GETSTATIC, "cubex2/ttfr/FontRendererCallback", "betterFontsEnabled", "Z"));
             toInject.add(new JumpInsnNode(IFEQ, labelNode));
             toInject.add(new VarInsnNode(ALOAD, 0));
             toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
@@ -206,7 +206,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/betterfonts/StringCache;"));
             toInject.add(new VarInsnNode(ALOAD, 1));
             toInject.add(new VarInsnNode(ILOAD, 2));
-            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/betterfonts/StringCache", "sizeStringToWidth", "(Ljava/lang/String;I)I", false));
+            toInject.add(new MethodInsnNode(INVOKEVIRTUAL, "cubex2/ttfr/StringCache", "sizeStringToWidth", "(Ljava/lang/String;I)I", false));
             toInject.add(new InsnNode(IRETURN));
             toInject.add(labelNode);
             m.instructions.insertBefore(m.instructions.getFirst(), toInject);

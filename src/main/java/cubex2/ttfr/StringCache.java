@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

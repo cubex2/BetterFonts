@@ -1,4 +1,4 @@
-package cubex2.betterfonts;
+package cubex2.ttfr;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
