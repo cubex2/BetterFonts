@@ -19,7 +19,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.2.0-1.8.9"
+version = "1.2.1-1.8.9"
 group = "cubex2.ttfr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TTFR"
 
@@ -82,7 +82,7 @@ processResources
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'cubex2.betterfonts.BetterFontsCore',
+        attributes 'FMLCorePlugin': 'cubex2.ttfr.BetterFontsCore',
                 'FMLCorePluginContainsFMLMod': 'false'
     }
 }
