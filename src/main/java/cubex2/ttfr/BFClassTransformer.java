@@ -127,7 +127,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
                     toInject.add(new JumpInsnNode(IFNULL, labelNode));
 
                     toInject.add(new VarInsnNode(ALOAD, 0));
-                    //toInject.add(new InsnNode(DUP));
+                    toInject.add(new InsnNode(DUP));
                     toInject.add(new FieldInsnNode(GETFIELD, classNode.name, "stringCache", "Lcubex2/ttfr/StringCache;"));
                     toInject.add(new VarInsnNode(ALOAD, 1));
                     toInject.add(new VarInsnNode(FLOAD, 2));
@@ -139,9 +139,8 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
                     toInject.add(new VarInsnNode(ALOAD, 0));
                     toInject.add(new FieldInsnNode(GETFIELD, classNode.name, posX, "F"));
                     toInject.add(new InsnNode(FADD));
-                    toInject.add(new InsnNode(POP));
 
-                    //toInject.add(new FieldInsnNode(PUTFIELD, classNode.name, posX, "F"));
+                    toInject.add(new FieldInsnNode(PUTFIELD, classNode.name, posX, "F"));
                     toInject.add(new JumpInsnNode(GOTO, end));
 
                     m.instructions.insertBefore(labelNode, toInject);
