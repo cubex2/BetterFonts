@@ -20,11 +20,11 @@ public class BFDummyContainer extends DummyModContainer
         ModMetadata meta = getMetadata();
         meta.modId = "BetterFonts";
         meta.name = "BetterFonts";
-        meta.version = "1.2.2";
+        meta.version = "1.3.0";
         meta.credits = "thvortex for original codes, iSuzutsuki";
         meta.authorList = Arrays.asList("CubeX2");
         meta.description = "";
-        meta.url = "https://secretdataz.github.io/BetterFonts";
+        meta.url = "http://minecraft.curseforge.com/projects/truetype-font-replacement";
         meta.screenshots = new String[0];
         meta.logoFile = "";
 

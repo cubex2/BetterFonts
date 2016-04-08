@@ -13,13 +13,22 @@ public class FontRendererCallback
 
     public static void constructor(IBFFontRenderer font, ResourceLocation location)
     {
+        // Disable for splash font renderer
+        if (((FontRenderer) font).getClass() != FontRenderer.class) return;
+
         if (location.getResourcePath().equalsIgnoreCase("textures/font/ascii.png") && font.getStringCache() == null)
         {
             font.setDropShadowEnabled(Config.dropShadow);
 
             int[] colorCode = ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, (FontRenderer) font, "colorCode", "field_78285_g", "f");
             font.setStringCache(new StringCache(colorCode));
-            font.getStringCache().setDefaultFont(Config.fontName, Config.fontSize, Config.antiAlias);
+            if (Config.fontName == null)
+            {
+                font.getStringCache().setDefaultFont("SansSerif", 18, false);
+            } else
+            {
+                font.getStringCache().setDefaultFont(Config.fontName, Config.fontSize, Config.antiAlias);
+            }
         }
     }
 

@@ -8,10 +8,13 @@ import java.util.ListIterator;
 
 public class BFClassTransformer implements IClassTransformer, Opcodes
 {
+    private final String FontRendererObf = "bct";
+    private final String ResourceLocationObf = "kk";
+
     @Override
     public byte[] transform(String s, String s1, byte[] bytes)
     {
-        if (s.equals("avn") || s.equals("net.minecraft.client.gui.FontRenderer"))
+        if (s.equals(FontRendererObf) || s.equals("net.minecraft.client.gui.FontRenderer"))
         {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(bytes);
@@ -28,8 +31,8 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
 
     private void transform(ClassNode classNode)
     {
-        String resourceLocation = classNode.name.equals("avn") ? "jy" : "net/minecraft/util/ResourceLocation";
-        String posX = classNode.name.equals("avn") ? "i" : "field_78295_j";
+        String resourceLocation = classNode.name.equals(FontRendererObf) ? ResourceLocationObf : "net/minecraft/util/ResourceLocation";
+        String posX = classNode.name.equals(FontRendererObf) ? "i" : "field_78295_j";
 
         classNode.interfaces.add("cubex2/ttfr/IBFFontRenderer");
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "stringCache", "Lcubex2/ttfr/StringCache;", null, null));

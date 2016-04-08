@@ -2,7 +2,7 @@ package cubex2.ttfr;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -422,12 +422,8 @@ public class StringCache
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        /* Using the Tessellator to queue up data in a vertex array and then draw all at once should be faster than immediate mode */
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
-        //GlStateManager.disableTexture2D();
-        worldRenderer.begin(7, DefaultVertexFormats.POSITION);
-        GlStateManager.color((color >> 16 & 0xff) / 255F, (color >> 8 & 0xff) / 255F, (color & 0xff) / 255F);
+        VertexBuffer buffer = tessellator.getBuffer();
 
         /* The currently active font syle is needed to select the proper ASCII digit style for fast replacement */
         int fontStyle = Font.PLAIN;
@@ -467,17 +463,8 @@ public class StringCache
                 glyphX += (oldWidth - newWidth) >> 1;
             }
 
-            /*
-            * Make sure the OpenGL texture storing this glyph's image is bound (if not already bound). All pending glyphs in the
-            * Tessellator's vertex array must be drawn before switching textures, otherwise they would erroneously use the new
-            * texture as well.
-            */
-            GlStateManager.enableTexture2D();
-            tessellator.draw();
-            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-            //worldRenderer.color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >> 24 & 0xff);
 
-            GlStateManager.bindTexture(texture.textureName);
+
 
 
             /* The divide by 2.0F is needed to align with the scaled GUI coordinate system; startX/startY are already scaled */
@@ -491,15 +478,16 @@ public class StringCache
             int g = color >> 8 & 0xff;
             int b = color & 0xff;
 
-            worldRenderer.pos(x1, y1, 0).tex(texture.u1, texture.v1).color(r, g, b, a).endVertex();
-            worldRenderer.pos(x1, y2, 0).tex(texture.u1, texture.v2).color(r, g, b, a).endVertex();
-            worldRenderer.pos(x2, y2, 0).tex(texture.u2, texture.v2).color(r, g, b, a).endVertex();
-            worldRenderer.pos(x2, y1, 0).tex(texture.u2, texture.v1).color(r, g, b, a).endVertex();
+            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+            GlStateManager.bindTexture(texture.textureName);
+
+            buffer.pos(x1, y1, 0).tex(texture.u1, texture.v1).color(r, g, b, a).endVertex();
+            buffer.pos(x1, y2, 0).tex(texture.u1, texture.v2).color(r, g, b, a).endVertex();
+            buffer.pos(x2, y2, 0).tex(texture.u2, texture.v2).color(r, g, b, a).endVertex();
+            buffer.pos(x2, y1, 0).tex(texture.u2, texture.v1).color(r, g, b, a).endVertex();
+
+            tessellator.draw();
         }
-
-        /* Draw any remaining glyphs in the Tessellator's vertex array (there should be at least one glyph pending) */
-        tessellator.draw();
-
 
         /* Draw strikethrough and underlines if the string uses them anywhere */
         if (entry.specialRender)
@@ -509,8 +497,7 @@ public class StringCache
             /* Use initial color passed to renderString(); disable texturing to draw solid color lines */
             color = initialColor;
             GlStateManager.disableTexture2D();
-            worldRenderer.begin(7, DefaultVertexFormats.POSITION);
-            GlStateManager.color((color >> 16 & 0xff) / 255F, (color >> 8 & 0xff) / 255F, (color & 0xff) / 255F);
+            buffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 
             for (int glyphIndex = 0, colorIndex = 0; glyphIndex < entry.glyphs.length; glyphIndex++)
             {
@@ -532,6 +519,11 @@ public class StringCache
                 /* The strike/underlines are drawn beyond the glyph's width to include the extra space between glyphs */
                 int glyphSpace = glyph.advance - glyph.texture.width;
 
+                int a = color >> 24 & 0xff;
+                int r = color >> 16 & 0xff;
+                int g = color >> 8 & 0xff;
+                int b = color & 0xff;
+
                 /* Draw underline under glyph if the style is enabled */
                 if ((renderStyle & ColorCode.UNDERLINE) != 0)
                 {
@@ -541,10 +533,10 @@ public class StringCache
                     float y1 = startY + (UNDERLINE_OFFSET) / 2.0F;
                     float y2 = startY + (UNDERLINE_OFFSET + UNDERLINE_THICKNESS) / 2.0F;
 
-                    worldRenderer.pos(x1, y1, 0).endVertex();
-                    worldRenderer.pos(x1, y2, 0).endVertex();
-                    worldRenderer.pos(x2, y2, 0).endVertex();
-                    worldRenderer.pos(x2, y1, 0).endVertex();
+                    buffer.pos(x1, y1, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x1, y2, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x2, y2, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x2, y1, 0).color(r, g, b, a).endVertex();
                 }
 
                 /* Draw strikethrough in the middle of glyph if the style is enabled */
@@ -556,10 +548,10 @@ public class StringCache
                     float y1 = startY + (STRIKETHROUGH_OFFSET) / 2.0F;
                     float y2 = startY + (STRIKETHROUGH_OFFSET + STRIKETHROUGH_THICKNESS) / 2.0F;
 
-                    worldRenderer.pos(x1, y1, 0).endVertex();
-                    worldRenderer.pos(x1, y2, 0).endVertex();
-                    worldRenderer.pos(x2, y2, 0).endVertex();
-                    worldRenderer.pos(x2, y1, 0).endVertex();
+                    buffer.pos(x1, y1, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x1, y2, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x2, y2, 0).color(r, g, b, a).endVertex();
+                    buffer.pos(x2, y1, 0).color(r, g, b, a).endVertex();
                 }
             }
 
@@ -704,7 +696,6 @@ public class StringCache
             color = colorTable[colorCode] & 0xffffff | color & 0xff000000;
         }
 
-        Tessellator.getInstance().getWorldRenderer().color(color >> 16 & 0xff, color >> 8 & 0xff, color & 0xff, color >> 24 & 0xff);
         return color;
     }
 
