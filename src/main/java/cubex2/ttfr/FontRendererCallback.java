@@ -13,6 +13,9 @@ public class FontRendererCallback
 
     public static void constructor(IBFFontRenderer font, ResourceLocation location)
     {
+        // Disable for splash font renderer
+        if (((FontRenderer) font).getClass() != FontRenderer.class) return;
+
         if (location.getResourcePath().equalsIgnoreCase("textures/font/ascii.png") && font.getStringCache() == null)
         {
             font.setDropShadowEnabled(Config.dropShadow);
