@@ -392,6 +392,9 @@ public class StringCache
             return 0;
         }
 
+        // Fix for what RenderLivingBase#setBrightness does
+        GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+
         /* Make sure the entire string is cached before rendering and return its glyph representation */
         Entry entry = cacheString(str);
 
@@ -462,10 +465,6 @@ public class StringCache
                 int newWidth = texture.width;
                 glyphX += (oldWidth - newWidth) >> 1;
             }
-
-
-
-
 
             /* The divide by 2.0F is needed to align with the scaled GUI coordinate system; startX/startY are already scaled */
             float x1 = startX + (glyphX) / 2.0F;
