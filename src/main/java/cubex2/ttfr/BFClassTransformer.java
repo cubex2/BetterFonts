@@ -11,6 +11,8 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
     private final String FontRendererObf = "bct";
     private final String ResourceLocationObf = "kk";
 
+    private static final String FIELD_ENABLED = "bf_enabled";
+
     @Override
     public byte[] transform(String s, String s1, byte[] bytes)
     {
@@ -37,11 +39,11 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
         classNode.interfaces.add("cubex2/ttfr/IBFFontRenderer");
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "stringCache", "Lcubex2/ttfr/StringCache;", null, null));
         classNode.fields.add(new FieldNode(ACC_PUBLIC, "dropShadowEnabled", "Z", null, true));
-        classNode.fields.add(new FieldNode(ACC_PUBLIC, "enabled", "Z", null, true));
+        classNode.fields.add(new FieldNode(ACC_PUBLIC, FIELD_ENABLED, "Z", null, true));
 
         addGetterAndSetter(classNode, "setStringCache", "getStringCache", "stringCache", "Lcubex2/ttfr/StringCache;", ARETURN);
         addGetterAndSetter(classNode, "setDropShadowEnabled", "isDropShadowEnabled", "dropShadowEnabled", "Z", IRETURN);
-        addGetterAndSetter(classNode, "setEnabled", "isEnabled", "enabled", "Z", IRETURN);
+        addGetterAndSetter(classNode, "setEnabled", "isEnabled", FIELD_ENABLED, "Z", IRETURN);
 
         MethodNode m = findMethod(classNode, null, "<init>");
 
