@@ -2,6 +2,7 @@ package cubex2.ttfr;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -23,11 +24,16 @@ public class BFDummyContainer extends DummyModContainer
         meta.version = "1.5.0";
         meta.credits = "thvortex for original codes, iSuzutsuki";
         meta.authorList = Arrays.asList("CubeX2");
-        meta.description = "";
+        meta.description = "OpenType font support for Minecraft";
         meta.url = "http://minecraft.curseforge.com/projects/truetype-font-replacement";
         meta.screenshots = new String[0];
         meta.logoFile = "";
+    }
 
+    @Override
+    public String getGuiClassName()
+    {
+        return "cubex2.ttfr.ConfigGuiFactory";
     }
 
     @Override
@@ -53,6 +59,7 @@ public class BFDummyContainer extends DummyModContainer
     public void preInit(FMLPreInitializationEvent evt)
     {
         Config.load(evt.getSuggestedConfigurationFile());
+        MinecraftForge.EVENT_BUS.register(new Config());
     }
 
     @Subscribe

@@ -18,17 +18,9 @@ public class FontRendererCallback
 
         if (location.getResourcePath().equalsIgnoreCase("textures/font/ascii.png") && font.getStringCache() == null)
         {
-            font.setDropShadowEnabled(Config.dropShadow);
-
             int[] colorCode = ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, (FontRenderer) font, "colorCode", "field_78285_g", "f");
             font.setStringCache(new StringCache(colorCode));
-            if (Config.fontName == null)
-            {
-                font.getStringCache().setDefaultFont("SansSerif", 18, false);
-            } else
-            {
-                font.getStringCache().setDefaultFont(Config.fontName, Config.fontSize, Config.antiAlias);
-            }
+            Config.applyFont(font);
         }
     }
 

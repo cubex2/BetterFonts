@@ -13,7 +13,7 @@ public class BetterFontsCore implements IFMLLoadingPlugin
     @Override
     public String[] getASMTransformerClass()
     {
-        return new String[]{BFClassTransformer.class.getName()};
+        return new String[] {BFClassTransformer.class.getName()};
     }
 
     @Override

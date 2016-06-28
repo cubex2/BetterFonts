@@ -1,6 +1,9 @@
 package cubex2.ttfr;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.io.File;
@@ -15,28 +18,52 @@ public class Config
     private static final Font ALL_FONTS[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
     private static final String ALL_FONT_NAMES[] = getAllFontNames();
 
-    private static Configuration cfg;
+    public static Configuration cfg;
 
-    public static String fontName;
-    public static int fontSize;
-    public static boolean antiAlias;
-    public static boolean dropShadow;
+    private static String fontName;
+    private static int fontSize;
+    private static boolean antiAlias;
+    private static boolean dropShadow;
 
     public static void load(File file)
     {
         cfg = new Configuration(file);
-        try
-        {
-            cfg.load();
+        syncConfig();
+    }
 
-            fontName = getActualFontName(cfg.getString("fontName", Configuration.CATEGORY_GENERAL, "SansSerif", "Valid font names: " + Arrays.toString(ALL_FONT_NAMES), ALL_FONT_NAMES));
-            fontSize = cfg.getInt("fonSize", Configuration.CATEGORY_GENERAL, 18, 1, 100, "");
-            antiAlias = cfg.getBoolean("antiAlias", Configuration.CATEGORY_GENERAL, false, "");
-            dropShadow = cfg.getBoolean("dropShadow", Configuration.CATEGORY_GENERAL, true, "Setting this to \"false\" will disable drop shadows completely");
+    private static void syncConfig()
+    {
+        fontName = cfg.getString("fontName", Configuration.CATEGORY_GENERAL, "SansSerif", "Valid font names: " + Arrays.toString(ALL_FONT_NAMES));
+        fontSize = cfg.getInt("fontSize", Configuration.CATEGORY_GENERAL, 18, 1, 100, "The font's size");
+        antiAlias = cfg.getBoolean("antiAlias", Configuration.CATEGORY_GENERAL, false, "Whether to use anti-aliasing");
+        dropShadow = cfg.getBoolean("dropShadow", Configuration.CATEGORY_GENERAL, true, "Setting this to \"false\" will disable drop shadows completely");
 
-        } finally
-        {
+        if (cfg.hasChanged())
             cfg.save();
+    }
+
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
+    {
+        if (event.getModID().equals("BetterFonts"))
+        {
+            syncConfig();
+
+            IBFFontRenderer font = (IBFFontRenderer) FMLClientHandler.instance().getClient().fontRendererObj;
+            applyFont(font);
+        }
+    }
+
+    public static void applyFont(IBFFontRenderer font)
+    {
+        font.setDropShadowEnabled(dropShadow);
+
+        if (fontName == null || fontName.isEmpty())
+        {
+            font.getStringCache().setDefaultFont("SansSerif", 18, false);
+        } else
+        {
+            font.getStringCache().setDefaultFont(getActualFontName(fontName), fontSize, antiAlias);
         }
     }
 
