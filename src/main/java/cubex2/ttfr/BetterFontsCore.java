@@ -5,7 +5,7 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import java.io.File;
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion("1.10")
+@IFMLLoadingPlugin.MCVersion("1.10.2")
 public class BetterFontsCore implements IFMLLoadingPlugin
 {
     public static File location;
