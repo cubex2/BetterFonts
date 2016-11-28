@@ -12,6 +12,6 @@ public class ConfigGui extends GuiConfig
     {
         super(parentScreen,
               new ConfigElement(Config.cfg.getCategory(CATEGORY_GENERAL)).getChildElements(),
-              "BetterFonts", false, false, GuiConfig.getAbridgedConfigPath(Config.cfg.toString()));
+              "betterfonts", false, false, GuiConfig.getAbridgedConfigPath(Config.cfg.toString()));
     }
 }
