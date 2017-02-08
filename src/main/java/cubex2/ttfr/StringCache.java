@@ -666,7 +666,10 @@ public class StringCache
      */
     public String trimStringToWidth(String str, int width, boolean reverse)
     {
-        int length = sizeString(str, width, false);
+        if (reverse)
+            str = new StringBuilder(str).reverse().toString();
+
+        int length = sizeString(str, width, true);
         str = str.substring(0, length);
 
         if (reverse)
