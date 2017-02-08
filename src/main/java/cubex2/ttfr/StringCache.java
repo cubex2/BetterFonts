@@ -630,8 +630,16 @@ public class StringCache
                 }
             }
 
-            advance += glyphs[index].advance;
-            index++;
+            int nextAdvance = advance + glyphs[index].advance;
+            if (nextAdvance <= width)
+            {
+                advance = nextAdvance;
+                index++;
+            }
+            else
+            {
+                break;
+            }
         }
 
         /* Avoid splitting individual words if breakAtSpaces set; same test condition as in Minecraft's FontRenderer */
