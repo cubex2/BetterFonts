@@ -14,4 +14,6 @@ public class ConfigGui extends GuiConfig
               new ConfigElement(Config.cfg.getCategory(CATEGORY_GENERAL)).getChildElements(),
               "BetterFonts", false, false, GuiConfig.getAbridgedConfigPath(Config.cfg.toString()));
     }
+
+
 }
