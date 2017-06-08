@@ -1,13 +1,19 @@
 package cubex2.ttfr;
 
+import com.google.common.collect.Maps;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiConfigEntries;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
 
 public class Config
 {
@@ -33,10 +39,14 @@ public class Config
 
     private static void syncConfig()
     {
-        fontName = cfg.getString("fontName", Configuration.CATEGORY_GENERAL, "SansSerif", "Valid font names: " + Arrays.toString(ALL_FONT_NAMES));
+        Property fontNameProp = cfg.get(Configuration.CATEGORY_GENERAL, "fontName", "SansSerif", "Valid font names: " + Arrays.toString(ALL_FONT_NAMES));
+
+        fontName = fontNameProp.getString();
         fontSize = cfg.getInt("fontSize", Configuration.CATEGORY_GENERAL, 18, 1, 100, "The font's size");
         antiAlias = cfg.getBoolean("antiAlias", Configuration.CATEGORY_GENERAL, false, "Whether to use anti-aliasing");
         dropShadow = cfg.getBoolean("dropShadow", Configuration.CATEGORY_GENERAL, true, "Setting this to \"false\" will disable drop shadows completely");
+
+        fontNameProp.setConfigEntryClass(SelectFontEntry.class);
 
         if (cfg.hasChanged())
             cfg.save();
@@ -133,5 +143,25 @@ public class Config
 
         System.out.println("Invalid font. Using " + fontName + " instead");
         return fontName;
+    }
+
+
+    public static class SelectFontEntry extends GuiConfigEntries.SelectValueEntry
+    {
+        public SelectFontEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement)
+        {
+            super(owningScreen, owningEntryList, configElement, getValues());
+        }
+
+        private static Map<Object, String> getValues()
+        {
+            Map<Object, String> values = Maps.newHashMap();
+
+            for (String name : ALL_FONT_NAMES)
+            {
+                values.put(name, name);
+            }
+            return values;
+        }
     }
 }
