@@ -3,7 +3,7 @@ package cubex2.ttfr;
 import java.util.Map;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.MCVersion("1.11.2")
+@IFMLLoadingPlugin.MCVersion("1.12")
 public class BetterFontsCore implements IFMLLoadingPlugin
 {
     @Override

@@ -1,34 +1,18 @@
 package cubex2.ttfr;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.client.IModGuiFactory;
+import net.minecraftforge.fml.client.DefaultGuiFactory;
 
-import java.util.Set;
-
-public class ConfigGuiFactory implements IModGuiFactory
+public class ConfigGuiFactory extends DefaultGuiFactory
 {
-    @Override
-    public void initialize(Minecraft minecraftInstance)
+    public ConfigGuiFactory()
     {
-
+        super("betterfonts", "Better Fonts");
     }
 
     @Override
-    public Class<? extends GuiScreen> mainConfigGuiClass()
+    public GuiScreen createConfigGui(GuiScreen parentScreen)
     {
-        return ConfigGui.class;
-    }
-
-    @Override
-    public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
-    {
-        return null;
-    }
-
-    @Override
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
-    {
-        return null;
+        return new ConfigGui(parentScreen);
     }
 }

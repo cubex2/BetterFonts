@@ -1,8 +1,8 @@
 package cubex2.ttfr;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -426,7 +426,7 @@ public class StringCache
         }
 
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuffer();
 
         /* The currently active font syle is needed to select the proper ASCII digit style for fast replacement */
         int fontStyle = Font.PLAIN;
@@ -638,8 +638,7 @@ public class StringCache
             {
                 advance = nextAdvance;
                 index++;
-            }
-            else
+            } else
             {
                 break;
             }

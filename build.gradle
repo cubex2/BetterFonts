@@ -4,20 +4,20 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.11.2-1.7.4"
+version = "1.12-1.8.0"
 group = "cubex2.ttfr" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TTFR"
 
 minecraft {
-    version = "1.11.2-13.20.0.2227"
+    version = "1.12-14.21.0.2347"
     runDir = "run"
-    mappings = "snapshot_20161220"
+    mappings = "snapshot_20170617"
     makeObfSourceJar = false
 }
 

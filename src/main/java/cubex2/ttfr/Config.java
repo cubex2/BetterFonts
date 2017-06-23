@@ -59,7 +59,7 @@ public class Config
         {
             syncConfig();
 
-            IBFFontRenderer font = (IBFFontRenderer) FMLClientHandler.instance().getClient().fontRendererObj;
+            IBFFontRenderer font = (IBFFontRenderer) FMLClientHandler.instance().getClient().fontRenderer;
             applyFont(font);
         }
     }
