@@ -7,26 +7,31 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+@SuppressWarnings("unused")
 public class FontRendererCallback
 {
     public static boolean betterFontsEnabled = true;
 
+    @SuppressWarnings("unused")
     public static void constructor(IBFFontRenderer font, ResourceLocation location)
     {
         // Disable for splash font renderer
         if (((FontRenderer) font).getClass() != FontRenderer.class) return;
 
-        if (location.getResourcePath().equalsIgnoreCase("textures/font/ascii.png") && font.getStringCache() == null)
+        if (location.getResourcePath().equalsIgnoreCase("textures/font/ascii.png") && font.getStringRenderer() == null)
         {
             int[] colorCode = ObfuscationReflectionHelper.getPrivateValue(FontRenderer.class, (FontRenderer) font, "colorCode", "field_78285_g", "f");
-            font.setStringCache(new StringCache(colorCode));
+            StringCache cache = new StringCache();
+            StringRenderer renderer = new StringRenderer(cache, colorCode);
+            font.setStringRenderer(renderer);
             Config.applyFont(font);
         }
     }
 
+    @SuppressWarnings("unused")
     public static String bidiReorder(IBFFontRenderer font, String text)
     {
-        if (betterFontsEnabled && font.getStringCache() != null)
+        if (betterFontsEnabled && font.getStringRenderer() != null)
         {
             return text;
         }

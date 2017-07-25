@@ -1,5 +1,7 @@
 package cubex2.ttfr;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
@@ -12,7 +14,9 @@ import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -21,12 +25,12 @@ import java.util.List;
  * select the proper physical font to use (especially on less common Linux distributions). Once a pre-rendered glyph image is
  * cached, it will remain stored in an OpenGL texture for the entire lifetime of the application (StringCache depends on this
  * behavior).
- *
- * @todo Should have a separate glyph cache and a separate smaller point size font for rendering the GUI at its smallest size
+ * <p>
  * and for use in the F3 debug screen; may need some explicit argument in StringCache.renderString() to select the size
- * @todo Need to have a config file that allows overring the font search order by locale to properly support Traditional Chinese
  * hanzi, Simplified Chinese hanzi, Japanese kanji, and Korean hanja
  */
+//todo Should have a separate glyph cache and a separate smaller point size font for rendering the GUI at its smallest size
+//todo Need to have a config file that allows overring the font search order by locale to properly support Traditional Chinese
 public class GlyphCache
 {
     /**
@@ -103,7 +107,7 @@ public class GlyphCache
      * have multiple entries for the various styles (i.e. bold, italic, etc.) of a font. This list starts with Java's "SansSerif" logical
      * font.
      */
-    private List<Font> usedFonts = new ArrayList();
+    private List<Font> usedFonts = Lists.newArrayList();
 
 
     /** ID of current OpenGL cache texture being used by cacheGlyphs() to store pre-rendered glyph images. */
@@ -114,14 +118,14 @@ public class GlyphCache
      * increasing) which forms the upper 32 bits of the key into the glyphCache map. This font cache can include different styles
      * of the same font family like bold or italic.
      */
-    private LinkedHashMap<Font, Integer> fontCache = new LinkedHashMap();
+    private LinkedHashMap<Font, Integer> fontCache = Maps.newLinkedHashMap();
 
     /**
      * A cache of pre-rendered glyphs mapping each glyph by its glyphcode to the position of its pre-rendered image within
      * the cache texture. The key is a 64 bit number such that the lower 32 bits are the glyphcode and the upper 32 are the
      * index of the font in the fontCache. This makes for a single globally unique number to identify any glyph from any font.
      */
-    private LinkedHashMap<Long, Entry> glyphCache = new LinkedHashMap();
+    private LinkedHashMap<Long, Entry> glyphCache = Maps.newLinkedHashMap();
 
 
     /**
@@ -152,31 +156,31 @@ public class GlyphCache
     static class Entry
     {
         /** The OpenGL texture ID that contains this glyph image. */
-        public int textureName;
+        int textureName;
 
         /** The width in pixels of the glyph image. */
-        public int width;
+        int width;
 
         /** The height in pixels of the glyph image. */
-        public int height;
+        int height;
 
         /** The horizontal texture coordinate of the upper-left corner. */
-        public float u1;
+        float u1;
 
         /** The vertical texture coordinate of the upper-left corner. */
-        public float v1;
+        float v1;
 
         /** The horizontal texture coordinate of the lower-right corner. */
-        public float u2;
+        float u2;
 
         /** The vertical texture coordinate of the lower-right corner. */
-        public float v2;
+        float v2;
     }
 
     /**
      * A single instance of GlyphCache is allocated for internal use by the StringCache class.
      */
-    public GlyphCache()
+    GlyphCache()
     {
         /* Set background color for use with clearRect() */
         glyphCacheGraphics.setBackground(BACK_COLOR);
@@ -306,8 +310,8 @@ public class GlyphCache
      * @param limit       the (offset + length) at which to stop caching glyphs
      * @param layoutFlags either Font.LAYOUT_RIGHT_TO_LEFT or Font.LAYOUT_LEFT_TO_RIGHT; needed for weak bidirectional characters like
      *                    parenthesis which are mapped to two different glyph codes depending on the surrounding text direction
-     * @todo May need a blank border of pixels around everything for mip-map/tri-linear filtering with Optifine
      */
+    //todo May need a blank border of pixels around everything for mip-map/tri-linear filtering with Optifine
     void cacheGlyphs(Font font, char text[], int start, int limit, int layoutFlags)
     {
         /* Create new GlyphVector so glyphs can be moved around (kerning workaround; see below) without affecting caller */
@@ -477,10 +481,10 @@ public class GlyphCache
      * Update a portion of the current glyph cache texture using the contents of the glyphCacheImage with glTexSubImage2D().
      *
      * @param dirty The rectangular region in glyphCacheImage that has changed and needs to be copied into the texture
-     * @todo Add mip-mapping support here
-     * @todo Test with bilinear texture interpolation and possibly add a 1 pixel transparent border around each glyph to avoid
-     * bleedover when interpolation is active or add a small "fudge factor" to the UV coordinates like already n FontRenderer
+     *              bleedover when interpolation is active or add a small "fudge factor" to the UV coordinates like already n FontRenderer
      */
+    //todo Add mip-mapping support here
+    //todo Test with bilinear texture interpolation and possibly add a 1 pixel transparent border around each glyph to avoid
     private void updateTexture(Rectangle dirty)
     {
         /* Only update OpenGL texture if changes were made to the texture */
@@ -534,9 +538,8 @@ public class GlyphCache
      * Allocate a new OpenGL texture for caching pre-rendered glyph images. The new texture is initialized to fully transparent
      * white so the individual glyphs images within can have a transparent border between them. The new texture remains bound
      * after returning from the function.
-     *
-     * @todo use GL_ALPHA4 if anti-alias is turned off for even smaller textures
      */
+    //todo use GL_ALPHA4 if anti-alias is turned off for even smaller textures
     private void allocateGlyphCacheTexture()
     {
         /* Initialize the background to all white but fully transparent. */

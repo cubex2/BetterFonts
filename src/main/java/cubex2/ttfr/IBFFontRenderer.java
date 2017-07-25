@@ -2,9 +2,9 @@ package cubex2.ttfr;
 
 public interface IBFFontRenderer
 {
-    StringCache getStringCache();
+    StringRenderer getStringRenderer();
 
-    void setStringCache(StringCache value);
+    void setStringRenderer(StringRenderer value);
 
     boolean isDropShadowEnabled();
 

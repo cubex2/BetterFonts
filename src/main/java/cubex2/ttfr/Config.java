@@ -70,10 +70,10 @@ public class Config
 
         if (fontName == null || fontName.isEmpty())
         {
-            font.getStringCache().setDefaultFont("SansSerif", 18, false);
+            font.getStringRenderer().getCache().setDefaultFont("SansSerif", 18, false);
         } else
         {
-            font.getStringCache().setDefaultFont(getActualFontName(fontName), fontSize, antiAlias);
+            font.getStringRenderer().getCache().setDefaultFont(getActualFontName(fontName), fontSize, antiAlias);
         }
     }
 
