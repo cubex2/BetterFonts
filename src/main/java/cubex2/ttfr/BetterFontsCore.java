@@ -1,9 +1,9 @@
 package cubex2.ttfr;
 
-import java.util.Map;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.MCVersion("1.12")
+import java.util.Map;
+
 public class BetterFontsCore implements IFMLLoadingPlugin
 {
     @Override
