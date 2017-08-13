@@ -21,7 +21,7 @@ public class BFDummyContainer extends DummyModContainer
         ModMetadata meta = getMetadata();
         meta.modId = "betterfonts";
         meta.name = "BetterFonts";
-        meta.version = "1.9.0";
+        meta.version = "1.9.1";
         meta.credits = "thvortex for original codes, iSuzutsuki";
         meta.authorList = Arrays.asList("CubeX2");
         meta.description = "OpenType font support for Minecraft";

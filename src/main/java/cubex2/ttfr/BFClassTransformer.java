@@ -8,8 +8,8 @@ import java.util.ListIterator;
 
 public class BFClassTransformer implements IClassTransformer, Opcodes
 {
-    private final String FontRendererObf = "bin";
-    private final String ResourceLocationObf = "nd";
+    private final String FontRendererObf = "bip";
+    private final String ResourceLocationObf = "nf";
 
     private static final String FIELD_ENABLED = "bf_enabled";
 
@@ -60,7 +60,7 @@ public class BFClassTransformer implements IClassTransformer, Opcodes
             {
                 MethodInsnNode methodNode = (MethodInsnNode) node;
                 if (hasName(methodNode, "readGlyphSizes", "func_98306_d", "d")
-                        && methodNode.desc.equals("()V"))
+                    && methodNode.desc.equals("()V"))
                 {
                     InsnList toInject = new InsnList();
 
